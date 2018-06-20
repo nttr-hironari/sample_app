@@ -7,19 +7,18 @@
     <h1>{{ $title }}</h1>
     <form method="POST" action="{{ url('posts/') }}">
         {{ csrf_field() }}
-        <div class="form-group">
-          <label for="titleInput">タイトル</label>
-          <input type="text" class="form-control" id="title" name="title">
+        <div class="input-field col s12">
+          <input id="title" type="text" class="validate" name="title">
+          <label for="email">Title</label>
         </div>
-        <div class="form-group">
-          <label for="bodyInput">内容</label>
-          <textarea class="form-control" id="body" rows="3" name="body"></textarea>
+        <div class="input-field col s12">
+          <textarea id="body" class="materialize-textarea" name="body"></textarea>
+          <label for="body">Content</label>
         </div>
-        <div class="form-group">
-          <label for="titleInput">ユーザーID</label>
-          <input type="value" class="form-control" id="user_id" name="user_id">
-        </div>
-        <button type="submit" class="btn btn-primary">新規追加</button>
+        <input type="hidden" name="user_id" value="1">
+        <button class="btn waves-effect waves-light" type="submit">Submit
+          <i class="material-icons right">Post</i>
+        </button>
       </form>
 </div>
 @endsection

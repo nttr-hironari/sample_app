@@ -68,6 +68,14 @@ class PostController extends Controller
         $post->body = $request->body;
         $post->user_id = $request->user_id;
         $post->save();
+
+        # キャッシュしてからリダイレクト
+        $posts = Post::all();
+        $view = view('posts.index', ['posts' => $posts]);
+        $minutes = 10;
+        Cache::put('posts/index', strval($view) , $minutes);
+        $view = view('posts.show', ['post' => $post]);
+        Cache::put('posts/'.$post->id, strval($view) , $minutes);
         return redirect('posts/' . $post->id);
     }
 
@@ -79,6 +87,8 @@ class PostController extends Controller
         $view = view('posts.index', ['posts' => $posts]);
         $minutes = 10;
         Cache::put('posts/index', strval($view) , $minutes);
+        # キャッシュの削除
+        Cache::forget('posts/'.$post->id);
         return redirect('posts/');
     }
 }

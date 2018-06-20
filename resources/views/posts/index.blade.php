@@ -6,30 +6,23 @@
 @section('content')
 <div class="container">
     <h1>{{ $title }}</h1>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>{{ __('Title') }}</th>
-                    <th>{{ __('Body') }}</th>
-                    <th>{{ __('Created') }}</th>
-                    <th>{{ __('Updated') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach ($posts as $post)
-                <tr>
-                    <td>
-                        <a href="{{ url('posts/'.$post->id) }}">{{ $post->title }}</a>
-                    </td>
-                    <td>{{ $post->body }}</td>
-                    <td>{{ $post->created_at }}</td>
-                    <td>{{ $post->updated_at }}</td>
-                 </tr>
-            @endforeach
-            </tbody>
-        </table>
+    @foreach ($posts as $post)
+    <div class="row">
+        <div class="col s12 m6">
+          <div class="card blue-grey darken-1">
+            <div class="card-content white-text">
+            <span class="card-title">{{ $post->title }}</span>
+            <p>{{ $post->body }}</p>
+            </div>
+            <div class="card-action">
+              <a href="{{ url('posts/'.$post->id) }}">Show</a>
+              <a href="{{ url('posts/'.$post->id.'/edit') }}">Edit</a>
+            </div>
+          </div>
+        </div>
     </div>
+    @endforeach
+
     <a href="{{ url('posts/create') }}">New Post</a>
 </div>
 @endsection

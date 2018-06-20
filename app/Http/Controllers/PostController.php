@@ -35,6 +35,12 @@ class PostController extends Controller
         $post->body = $request->body;
         $post->user_id = 1;
         $post->save();
+        
+        # キャッシュしてからリダイレクト
+        $posts = Post::all();
+        $view = view('posts.index', ['posts' => $posts]);
+        $minutes = 10;
+        Cache::put('posts/index', strval($view) , $minutes);
         return redirect('posts/'.$post->id);
     }
 
@@ -68,6 +74,11 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
-        return redirect('posts');
+        # キャッシュしてからリダイレクト
+        $posts = Post::all();
+        $view = view('posts.index', ['posts' => $posts]);
+        $minutes = 10;
+        Cache::put('posts/index', strval($view) , $minutes);
+        return redirect('posts/');
     }
 }

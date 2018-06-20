@@ -23,10 +23,19 @@
     </dl>
     <hr>
     <div id="post-body">
-        {{ $post->body }}
+        <p class="flow-text">{{ $post->body }}</p>
     </div>
     <div>
-        <a href="{{ url('posts') }}">Index</a>
-    </dib>
+        <form action="{{ url('posts/'.$post->id.'/edit') }}" method="GET" id="edit-btn">
+            <input type="submit" class="btn btn-danger" value="EDIT"/>
+        </form>
+        <br>
+        <form action="{{ url('posts/'.$post->id) }}" method="POST" id="delete-btn">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <input type="submit" class="btn btn-danger" value="Delete"/>
+        </form>
+    </div>
+
 </div>
 @endsection

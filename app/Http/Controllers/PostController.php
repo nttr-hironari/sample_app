@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use App\Post;
 
 class PostController extends Controller
@@ -10,9 +11,16 @@ class PostController extends Controller
 
     public function index()
     {
-        $posts = Post::all();
-
-        return view('posts.index', ['posts' => $posts]);
+        if (Cache::has('posts/index')) {
+            $view = Cache::get('posts/index');
+            return $view;
+        } else {
+            $posts = Post::all();
+            $view = view('posts.index', ['posts' => $posts]);
+            $minutes = 10;
+            Cache::put('posts/index', strval($view) , $minutes);
+            return $view;
+        }
     }
 
     public function create()
@@ -32,7 +40,15 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
-        return view('posts.show', ['post' => $post]);
+        if (Cache::has('posts/'.$post->id)) {
+            $view = Cache::get('posts/'.$post->id);
+            return $view;
+        } else {
+            $view = view('posts.show', ['post' => $post]);
+            $minutes = 10;
+            Cache::put('posts/'.$post->id, strval($view) , $minutes);
+            return $view;
+        }
     }
 
     public function edit(Post $post)
